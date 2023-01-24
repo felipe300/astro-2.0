@@ -1,15 +1,33 @@
 ---
+import { CollectionEntry, getCollection, getEntryBySlug } from "astro:content";
+
+const blogPosts = await getCollection("blog", ({ data }) => {
+  return !data;
+});
+
+const post1 = await getEntryBySlug("blog", "post-1");
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Astro</title>
+  </head>
+  <body>
+    <h1>Astro</h1>
+
+    <h2>List posts</h2>
+    {
+      blogPosts.map((post) => (
+        <div>
+          <h2>{post.data.title}</h2>
+          <p>{post.data.description}</p>
+          <a href={post.slug}>Read post</a>
+        </div>
+      ))
+    }
+  </body>
 </html>
